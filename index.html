@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071426"><title>Zeno AI 0.4</title>
+<style>
+:root{--bg:#071426;--panel:#0c1d32;--panel2:#122b49;--line:#254360;--txt:#eff7ff;--muted:#9bb4d0;--blue:#55b7ff;--violet:#9381ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#193d68,transparent 48%),var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+.app{max-width:900px;margin:auto;min-height:100vh;padding:12px;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:12px;padding:10px 4px 15px;border-bottom:1px solid var(--line)}
+.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(145deg,#1a5488,#15264c);display:grid;place-items:center;box-shadow:0 0 28px #238ce755;font-size:25px}
+.brand{flex:1}.brand b{font-size:22px;letter-spacing:1px}.brand small{display:block;color:var(--blue);font-size:10px;letter-spacing:2px}
+.status{font-size:11px;color:#ffc978;border:1px solid #805d32;border-radius:30px;padding:6px 10px}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:14px;flex:1;padding-top:14px}
+aside,.main{background:#0a1a2eaa;border:1px solid var(--line);border-radius:20px}
+aside{padding:12px;display:flex;flex-direction:column;gap:9px}
+button{font:inherit;cursor:pointer;color:inherit;border:0}
+.new{background:linear-gradient(100deg,#1764a3,#5143a0);padding:12px;border-radius:13px;font-weight:700}
+.sidehead{font-size:11px;color:#7794b4;padding:8px 5px 0}
+.sideitem{background:transparent;text-align:right;padding:10px;border-radius:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sideitem.active,.sideitem:hover{background:#163451;color:white}
+.main{display:flex;flex-direction:column;min-height:72vh;overflow:hidden}
+.topline{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px}
+.welcome{margin:auto;text-align:center;padding:30px 18px;max-width:520px}
+.orb{width:112px;height:112px;border-radius:50%;margin:0 auto 20px;background:radial-gradient(circle at 35% 30%,#b5e9ff,#368bd4 35%,#253d87 65%,#111a43);box-shadow:0 0 24px #3daeff88,0 0 65px #755bff44;display:grid;place-items:center;font-size:43px;border:1px solid #8ed8ff88}
+h1{font-size:27px;margin:0 0 8px}.welcome p{color:var(--muted);line-height:1.8;margin:0}
+.suggestions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:25px}
+.suggest{background:#102944;border:1px solid #244b70;border-radius:13px;padding:12px;text-align:right;color:#dceeff}
+.suggest small{display:block;color:#91acc9;margin-top:4px}
+.messages{padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto;flex:1}
+.msg{max-width:90%;padding:12px 14px;border-radius:15px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.user{align-self:flex-start;background:#174a78;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-end;background:#132942;border:1px solid #24415f;border-bottom-left-radius:4px}
+.msg .who{font-size:10px;color:#83cfff;margin-bottom:4px}
+.composer{padding:12px;border-top:1px solid var(--line);display:flex;gap:8px;background:#09182a}
+textarea{flex:1;resize:none;min-height:46px;max-height:130px;border-radius:13px;border:1px solid #315575;background:#10243b;color:white;padding:12px;font:inherit;outline:none}
+textarea:focus{border-color:var(--blue)}.send{width:50px;border-radius:13px;background:linear-gradient(145deg,#167bc0,#5749a5);font-size:20px}.send:disabled{opacity:.45;cursor:not-allowed}
+.foot{font-size:10px;color:#7894b2;text-align:center;padding:8px}.notice{margin:10px 14px 0;padding:9px 11px;border:1px solid #795b32;background:#33281766;color:#ffd99c;border-radius:10px;font-size:11px;line-height:1.6}
+.typing{color:#9bcfff;font-size:12px;padding:0 16px 8px}
+@media(max-width:650px){.app{padding:9px}.layout{display:flex;flex-direction:column}.layout aside{order:2;display:flex;flex-direction:row;overflow:auto;padding:7px}.layout aside .sidehead,#history{display:none}.layout aside button{white-space:nowrap}.main{min-height:68vh}.welcome{padding:28px 14px}.msg{max-width:96%}}
+</style></head><body><div class="app">
+<header><div class="logo">✧</div><div class="brand"><b>ZENO AI</b><small>INTELLIGENCE REIMAGINED</small></div><span class="status" id="status">● آماده‌سازی اتصال</span></header>
+<div class="layout"><aside><button class="new" id="newChat">＋ گفت‌وگوی جدید</button><div class="sidehead">گفت‌وگوهای اخیر</div><div id="history"></div><button class="sideitem" id="clearAll">حذف تاریخچه</button></aside>
+<section class="main"><div class="topline"><span id="chatTitle">فضای گفت‌وگوی تازه</span><span id="modelLabel">مدل: تنظیم نشده</span></div>
+<div class="notice" id="notice">برای پاسخ هوشمند، سرور Zeno باید راه‌اندازی شود. کلید API را فقط در تنظیمات امن سرور قرار دهید، نه در این صفحه.</div>
+<div class="welcome" id="welcome"><div class="orb">✧</div><h1>سلام، من Zeno هستم.</h1><p>برای فکر کردن، یاد گرفتن و ساختن ایده‌های تازه آماده‌ام.<br>از کجا شروع کنیم؟</p><div class="suggestions">
+<button class="suggest" data-prompt="برای ساخت یک بازی موبایلی از کجا شروع کنم؟">🎮 ساخت بازی<small>ایده‌پردازی و برنامه‌ریزی</small></button>
+<button class="suggest" data-prompt="یک موضوع جالب علمی بهم یاد بده.">🧠 یادگیری<small>کشف چیزهای تازه</small></button>
+<button class="suggest" data-prompt="برای پروژه‌ام چند ایده خلاقانه بده.">✨ ایده‌پردازی<small>فکرهای جدید</small></button>
+<button class="suggest" data-prompt="در نوشتن یک داستان کمکم کن.">✍️ نویسندگی<small>داستان و محتوا</small></button></div></div>
+<div class="messages" id="messages" hidden></div><div class="typing" id="typing" hidden>Zeno در حال فکر کردن است…</div>
+<div class="composer"><textarea id="input" rows="1" placeholder="پیامت رو برای Zeno بنویس..."></textarea><button class="send" id="send" aria-label="ارسال">➤</button></div><div class="foot">نسخه 0.4 · آماده اتصال به مدل زبانی از طریق سرور امن</div>
+</section></div></div>
+<script>
+const $=s=>document.querySelector(s);
+let chats=JSON.parse(localStorage.getItem('zeno_chats_v04')||'[]'),current=null,busy=false;
+function save(){localStorage.setItem('zeno_chats_v04',JSON.stringify(chats));renderHistory()}
+function renderHistory(){let box=$('#history');box.innerHTML='';chats.slice().reverse().forEach(c=>{let b=document.createElement('button');b.className='sideitem'+(c.id===current?' active':'');b.textContent='▸ '+c.title;b.onclick=()=>openChat(c.id);box.append(b)})}
+function fresh(){let id=Date.now().toString();chats.push({id,title:'گفت‌وگوی جدید',messages:[]});save();openChat(id)}
+function openChat(id){current=id;let c=chats.find(x=>x.id===id);$('#chatTitle').textContent=c?.title||'گفت‌وگو';$('#welcome').hidden=!!c?.messages.length;$('#messages').hidden=!c?.messages.length;draw();renderHistory()}
+function draw(){let c=chats.find(x=>x.id===current),box=$('#messages');box.innerHTML='';(c?.messages||[]).forEach(m=>{let d=document.createElement('div');d.className='msg '+m.role;let w=document.createElement('div');w.className='who';w.textContent=m.role==='user'?'شما':'Zeno';let t=document.createElement('div');t.textContent=m.text;d.append(w,t);box.append(d)});box.scrollTop=box.scrollHeight}
+async function send(text){text=(text||$('#input').value).trim();if(!text||busy)return;if(!current)fresh();let c=chats.find(x=>x.id===current);c.messages.push({role:'user',text});if(c.title==='گفت‌وگوی جدید')c.title=text.slice(0,26);$('#input').value='';$('#welcome').hidden=true;$('#messages').hidden=false;save();draw();busy=true;$('#send').disabled=true;$('#typing').hidden=false;
+try{
+ const history=c.messages.filter(m=>m.role==='user'||m.role==='ai').slice(-20).map(m=>({role:m.role==='ai'?'model':'user',text:m.text}));
+ const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history})});
+ const data=await res.json();if(!res.ok)throw new Error(data.error||'خطای ارتباط با سرور');
+ c.messages.push({role:'ai',text:data.reply||'پاسخی دریافت نشد.'});$('#status').textContent='● متصل';$('#status').style.color='#80e5b0';$('#modelLabel').textContent='مدل: '+(data.model||'آنلاین');$('#notice').hidden=true;
+}catch(e){c.messages.push({role:'ai',text:'هنوز به موتور هوش مصنوعی وصل نشدم.\\n\\nجزئیات: '+e.message+'\\n\\nاگر سرور را اجرا نکرده‌ای، طبق راهنمای پروژه آن را راه‌اندازی کن. اگر اجراست، آدرس و تنظیمات API را بررسی کن.'});$('#status').textContent='● آفلاین / متصل نیست';$('#status').style.color='#ffc978'}
+finally{busy=false;$('#send').disabled=false;$('#typing').hidden=true;save();draw()}
+}
+$('#send').onclick=()=>send();$('#input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('#newChat').onclick=fresh;
+$('#clearAll').onclick=()=>{if(confirm('همه گفت‌وگوهای ذخیره‌شده پاک شوند؟')){chats=[];current=null;save();$('#messages').hidden=true;$('#welcome').hidden=false;$('#chatTitle').textContent='فضای گفت‌وگوی تازه'}};
+document.querySelectorAll('[data-prompt]').forEach(b=>b.onclick=()=>send(b.dataset.prompt));
+renderHistory();if(chats.length)openChat(chats[chats.length-1].id);
+</script></body></html>
